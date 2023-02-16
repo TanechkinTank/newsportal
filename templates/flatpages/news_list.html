@@ -38,7 +38,7 @@ News List
             <td>{{ n.text | truncatechars:20 | censor}}</td>
             <td>{% current_time '%d %b %Y' %}</td>
             <td>
-                {% for сategory in n.postCategory.all %}
+                {% for category in n.postCategory.all %}
                     <a href="{% url 'category_list' category.id %}">{{ category }}</a>
                 {% endfor %}
             </td>

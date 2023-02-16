@@ -5,7 +5,7 @@ from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 
 
@@ -71,7 +71,7 @@ class CategoryListView(ListView):
 
     def get_queryset(self):
         self.postCategory = get_object_or_404(Category, id=self.kwargs['pk'])
-        queryset = Post.objects.filter(postcategory=self.postCategory).order_by('-date')
+        queryset = Post.objects.filter(postCategory=self.postCategory).order_by('-dateCreation')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -84,8 +84,8 @@ class CategoryListView(ListView):
 @login_required
 def subscribe(request, pk):
     user = request.user
-    category = Category.object.get(id=pk)
-    category.subscribes.add(user)
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
 
     message = "Вы подписались на рассылку новостей категории"
     return render(request, 'flatpages/subscribe.html', {'category': category, 'message': message})
